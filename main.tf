@@ -47,15 +47,16 @@ data "vsphere_virtual_machine" "template" {
 }
 
 # Create VMs
-resource "vsphere_virtual_machine" "vm" {
-  count = var.vm-count
+resource "vsphere_virtual_machine" "vm-master" {
+  count = var.vm-master-count
 
-  name             = "${var.vm-name}-${count.index + 1}"
+  name             = "${var.vm-name-prefix}-${var.vm-master-name}-${count.index + 1}"
   resource_pool_id = data.vsphere_compute_cluster.cluster.resource_pool_id
   datastore_id     = data.vsphere_datastore.datastore.id
 
   num_cpus = var.vm-cpu
   memory   = var.vm-ram
+  scsi_type = var.vm-scsi
   guest_id = var.vm-guest-id
 
   network_interface {
@@ -63,8 +64,8 @@ resource "vsphere_virtual_machine" "vm" {
   }
 
   disk {
-    label = "${var.vm-name}-${count.index + 1}-disk"
-    size  = 25
+    label = "${var.vm-name-prefix}-${var.vm-master-name}-${count.index + 1}"
+    size  = var.vm-hdd
     thin_provisioned = false
   }
 
@@ -75,7 +76,45 @@ resource "vsphere_virtual_machine" "vm" {
       timeout = 0
 
       linux_options {
-        host_name = "node-${count.index + 1}"
+        host_name = "${var.vm-name-prefix}-${var.vm-master-name}-${count.index + 1}"
+        domain    = var.vm-domain
+      }
+
+      network_interface {}
+    }
+  }
+}
+
+resource "vsphere_virtual_machine" "vm-worker" {
+  count = var.vm-worker-count
+
+  name             = "${var.vm-name-prefix}-${var.vm-worker-name}-${count.index + 1}"
+  resource_pool_id = data.vsphere_compute_cluster.cluster.resource_pool_id
+  datastore_id     = data.vsphere_datastore.datastore.id
+
+  num_cpus = var.vm-cpu
+  memory   = var.vm-ram
+  scsi_type = var.vm-scsi
+  guest_id = var.vm-guest-id
+
+  network_interface {
+    network_id = data.vsphere_network.network.id
+  }
+
+  disk {
+    label = "${var.vm-name-prefix}-${var.vm-worker-name}-${count.index + 1}"
+    size  = var.vm-hdd
+    thin_provisioned = false
+  }
+
+  clone {
+    template_uuid = data.vsphere_virtual_machine.template.id
+
+    customize {
+      timeout = 0
+
+      linux_options {
+        host_name = "${var.vm-name-prefix}-${var.vm-worker-name}-${count.index + 1}"
         domain    = var.vm-domain
       }
 

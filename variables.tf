@@ -44,7 +44,13 @@ variable "vsphere-template-folder" {
 # VMware vSphere virtual machine #
 #================================#
 
-variable "vm-count" {
+variable "vm-master-count" {
+  type        = string
+  description = "Number of VM"
+  default     =  1
+}
+
+variable "vm-worker-count" {
   type        = string
   description = "Number of VM"
   default     =  1
@@ -53,7 +59,7 @@ variable "vm-count" {
 variable "vm-name-prefix" {
   type        = string
   description = "Name of VM prefix"
-  default     =  "playtftest"
+  default     =  "k8s"
 }
 
 variable "vm-datastore" {
@@ -64,6 +70,7 @@ variable "vm-datastore" {
 variable "vm-network" {
   type        = string
   description = "Network used for the vSphere virtual machines"
+  default     = "VM Network"
 }
 
 variable "vm-linked-clone" {
@@ -81,11 +88,31 @@ variable "vm-cpu" {
 variable "vm-ram" {
   type        = string
   description = "Amount of RAM for the vSphere virtual machines (example: 2048)"
+  default     = "1024"
 }
 
-variable "vm-name" {
+variable "vm-hdd" {
+  type        = string
+  description = "Disk size HDD for the vSphere virtual machines (example: 25)"
+  default     = "16"
+}
+
+variable "vm-scsi" {
+  type        = string
+  description = "The common type of all SCSI controllers on this virtual machine."
+  default     = "pvscsi"
+}
+
+variable "vm-master-name" {
   type        = string
   description = "The name of the vSphere virtual machines and the hostname of the machine"
+  default     = "master"
+}
+
+variable "vm-worker-name" {
+  type        = string
+  description = "The name of the vSphere virtual machines and the hostname of the machine"
+  default     = "worker"
 }
 
 variable "vm-guest-id" {
