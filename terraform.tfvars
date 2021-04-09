@@ -3,13 +3,14 @@
 # ======================== #
 
 vm-master-count = "3"
-vm-worker-count = "2"
-vm-master-name = "master"
-vm-worker-name = "worker"
-vm-template-name = "CentOS-7-9-2009-template"
-vm-cpu = 4
-vm-ram = 4096
-vm-hdd = 40
+vm-worker-count = "3"
+vm-name-prefix = "K8S-PROD"
+vm-master-name = "MASTER"
+vm-worker-name = "WORKER"
+vm-template-name = "K8S-CentOS-7-9-2009-template"
+vm-cpu = 16
+vm-ram = 32
+vm-hdd = 50
 vm-scsi = "lsilogic"
 vm-guest-id = "centos64Guest"
 
@@ -33,10 +34,10 @@ vsphere-unverified-ssl = "true"
 vsphere-datacenter = "technocom"
 
 # vSphere cluster name where the infrastructure will be deployed
-vsphere-cluster = "clr-G1"
+vsphere-cluster = "clr-G3"
 
 # vSphere Datastore used to deploy VMs
-vm-datastore = "vsanDatastore-G1"
+vm-datastore = "vsanDatastore-G3"
 
 # vSphere Network used to deploy VMs
 vm-network = "VM Network"
