@@ -41,7 +41,7 @@ data "vsphere_network" "network" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-################################################################################
+############################## MASTER ######################################
 
 data "vsphere_virtual_machine" "template" {
   name          = "/${var.vsphere-datacenter}/vm/${var.vsphere-template-folder}/${var.vm-master-template-name}"
@@ -87,14 +87,14 @@ resource "vsphere_virtual_machine" "vm-master" {
   }
 }
 
-###############################################################################
+################################ WORKER #######################################
 
-data "vsphere_virtual_machine" "template-master" {
+data "vsphere_virtual_machine" "template-worker" {
   name          = "/${var.vsphere-datacenter}/vm/${var.vsphere-template-folder}/${var.vm-template-name}"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-resource "vsphere_virtual_machine" "vm-worker" {
+resource "vsphere_virtual_machine" "vm" {
   count = var.vm-worker-count
 
   name             = "${var.vm-name-prefix}-${var.vm-worker-name}-${count.index + 1}"
@@ -117,7 +117,7 @@ resource "vsphere_virtual_machine" "vm-worker" {
   }
 
   clone {
-    template_uuid = data.vsphere_virtual_machine.template-master.id
+    template_uuid = data.vsphere_virtual_machine.template-worker.id
 
     customize {
       timeout = 0

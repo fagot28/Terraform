@@ -4,7 +4,7 @@
 
 vm-master-count = "3"
 vm-worker-count = "3"
-vm-name-prefix = "K8S-PROD"
+vm-name-prefix = "K8S-NODE"
 vm-master-name = "MASTER"
 vm-worker-name = "WORKER"
 vm-master-template-name = "K8S-Master-CentOS-7-9-2009-template"
