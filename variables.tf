@@ -91,6 +91,12 @@ variable "vm-ram" {
   default     = "1024"
 }
 
+variable "vm-hdd-master" {
+  type        = string
+  description = "Disk size HDD for the vSphere virtual machines (example: 25)"
+  default     = "16"
+}
+
 variable "vm-hdd" {
   type        = string
   description = "Disk size HDD for the vSphere virtual machines (example: 25)"
@@ -121,6 +127,11 @@ variable "vm-guest-id" {
 }
 
 variable "vm-template-name" {
+  type        = string
+  description = "The template to clone to create the VM"
+}
+
+variable "vm-master-template-name" {
   type        = string
   description = "The template to clone to create the VM"
 }

@@ -7,10 +7,12 @@ vm-worker-count = "3"
 vm-name-prefix = "K8S-PROD"
 vm-master-name = "MASTER"
 vm-worker-name = "WORKER"
+vm-master-template-name = "K8S-Master-CentOS-7-9-2009-template"
 vm-template-name = "K8S-CentOS-7-9-2009-template"
 vm-cpu = 16
 vm-ram = 32
-vm-hdd = 50
+vm-hdd-master = 25
+vm-hdd = 100
 vm-scsi = "lsilogic"
 vm-guest-id = "centos64Guest"
 

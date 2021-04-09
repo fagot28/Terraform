@@ -41,8 +41,10 @@ data "vsphere_network" "network" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
+################################################################################
+
 data "vsphere_virtual_machine" "template" {
-  name          = "/${var.vsphere-datacenter}/vm/${var.vsphere-template-folder}/${var.vm-template-name}"
+  name          = "/${var.vsphere-datacenter}/vm/${var.vsphere-template-folder}/${var.vm-master-template-name}"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
@@ -65,7 +67,7 @@ resource "vsphere_virtual_machine" "vm-master" {
 
   disk {
     label = "${var.vm-name-prefix}-${var.vm-master-name}-${count.index + 1}"
-    size  = var.vm-hdd
+    size  = var.vm-hdd-master
     thin_provisioned = false
   }
 
@@ -83,6 +85,13 @@ resource "vsphere_virtual_machine" "vm-master" {
       network_interface {}
     }
   }
+}
+
+###############################################################################
+
+data "vsphere_virtual_machine" "template-master" {
+  name          = "/${var.vsphere-datacenter}/vm/${var.vsphere-template-folder}/${var.vm-template-name}"
+  datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 resource "vsphere_virtual_machine" "vm-worker" {
@@ -108,7 +117,7 @@ resource "vsphere_virtual_machine" "vm-worker" {
   }
 
   clone {
-    template_uuid = data.vsphere_virtual_machine.template.id
+    template_uuid = data.vsphere_virtual_machine.template-master.id
 
     customize {
       timeout = 0
